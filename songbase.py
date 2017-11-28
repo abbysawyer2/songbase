@@ -17,7 +17,7 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     about = db.Column(db.Text)
-    songs = db.relationship('Song', backref='artist')
+    songs = db.relationship('Song', backref='artist', cascade="delete")
 
 
 class Song(db.Model):
@@ -40,6 +40,7 @@ def index():
 def show_all_artists():
     artists = Artist.query.all()
     return render_template('artist-all.html', artists=artists)
+
 
 @app.route('/artist/add', methods=['GET', 'POST'])
 def add_artists():
@@ -115,6 +116,7 @@ def edit_song(id):
         # update the database
         db.session.commit()
         return redirect(url_for('show_all_songs'))
+
 
 
 @app.route('/about')
