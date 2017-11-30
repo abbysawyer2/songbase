@@ -71,6 +71,19 @@ def edit_artist(id):
         db.session.commit()
         return redirect(url_for('show_all_artists'))
 
+@app.route('/artist/delete/<int:id>', methods=['GET', 'POST'])
+def delete_artist(id):
+    artist = Artist.query.filter_by(id=id).first()
+    if request.method == 'GET':
+        return render_template('artist-delete.html', artist=artist)
+    if request.method == 'POST':
+        # delete the artist by id
+        # all related songs are deleted as well
+        db.session.delete(artist)
+        db.session.commit()
+        return redirect(url_for('show_all_artists'))
+
+
 
 # song-all.html adds song id to the edit button using a hidden input
 @app.route('/songs')
